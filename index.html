@@ -16,7 +16,10 @@
   header img{width:112px;height:112px;border-radius:26px;box-shadow:0 0 60px color-mix(in srgb,var(--glow) 45%,transparent)}
   h1{font-weight:300;font-size:44px;margin:24px 0 4px;letter-spacing:.01em}
   .tag{color:var(--tx2);margin:0 0 28px;font-size:19px}
-  .soon{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:9px 20px;font-size:14px;color:var(--tx2)}
+  .stores{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .store{display:inline-block;border:1px solid var(--tx);border-radius:999px;padding:10px 22px;font-size:15px;color:var(--tx);text-decoration:none}
+  .store.off{border-color:var(--line);color:var(--tx2)}
+  .store b{font-weight:600;font-variant-numeric:tabular-nums}
   .intro{max-width:560px;margin:40px auto;text-align:center}
   .shots{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:8px 0 48px}
   .shots img{width:min(250px,44vw);border-radius:22px;border:1px solid var(--line)}
@@ -36,7 +39,12 @@
     <img src="img/icon.png" alt="Dim Drop icon">
     <h1>Dim Drop</h1>
     <p class="tag"><span lang="en">A drop of light in the dark</span><span lang="pt">Uma gota de luz no escuro</span></p>
-    <span class="soon"><span lang="en">Coming soon to the App Store and Google Play</span><span lang="pt">Brevemente na App Store e na Google Play</span></span>
+    <div class="stores">
+      <a class="store" id="ios" href="#"><span lang="en">Available on the App Store</span><span lang="pt">Já disponível na App Store</span></a>
+      <span class="store off" id="android">
+        <span lang="en">Google Play in <b id="cd">…</b></span><span lang="pt">Google Play daqui a <b id="cdp">…</b></span>
+      </span>
+    </div>
   </header>
 
   <p class="intro">
@@ -62,6 +70,28 @@
     <a href="privacy.html"><span lang="en">Privacy policy</span><span lang="pt">Política de privacidade</span></a> ·
     <a href="mailto:lulu.works.studio@gmail.com"><span lang="en">Support</span><span lang="pt">Suporte</span></a></p>
 </footer>
+<script>
+// AO PUBLICAR NA APP STORE: colocar aqui o link da app. Sem link, o botão não é clicável.
+var APPSTORE_URL = 'https://apps.apple.com/app/id6832364332';
+// Lançamento na Google Play: 27 de novembro de 2026, 00:00 (Lisboa)
+var ANDROID_DATE = new Date('2026-11-27T00:00:00Z');
+(function(){
+  var a = document.getElementById('ios');
+  if (APPSTORE_URL) a.href = APPSTORE_URL; else { a.removeAttribute('href'); a.style.cursor = 'default'; }
+  function tick(){
+    var ms = ANDROID_DATE - Date.now();
+    if (ms <= 0){
+      document.getElementById('android').innerHTML = '<span lang="en">Available on Google Play</span><span lang="pt">Já disponível na Google Play</span>';
+      return;
+    }
+    var d = Math.floor(ms/864e5), h = Math.floor(ms/36e5)%24, m = Math.floor(ms/6e4)%60, sec = Math.floor(ms/1e3)%60;
+    var t = d + 'd ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+    document.getElementById('cd').textContent = t; document.getElementById('cdp').textContent = t;
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+</script>
 <script>if ((navigator.language || '').toLowerCase().startsWith('pt')) document.documentElement.classList.add('pt');</script>
 </body>
 </html>
